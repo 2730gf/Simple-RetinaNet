@@ -1,9 +1,7 @@
-import os
 import cv2
-import random
 import numpy as np
-
 import torch
+from collections import OrderedDict
 from model.utils import BBoxTransform, ClipBoxes, nms_with_class, nms_without_class, soft_nms
 
 regressBoxes = BBoxTransform()
@@ -48,7 +46,7 @@ def predict_single_imgs(model, img_path, cfg):
         anchors_nms_idx, weighted_scores = soft_nms(anchors_over_thresh, scores_over_thresh.clone(), thresh=0.3, mode='linear')
     else:
         # anchors_nms_idx = nms_with_class(anchors_over_thresh, scores_over_thresh,classes_over_thresh, iou_threshold=0.2)
-        anchors_nms_idx = nms_without_class(anchors_over_thresh, scores_over_thresh, iou_threshold=0.3)
+        anchors_nms_idx = nms_without_class(anchors_over_thresh, scores_over_thresh, iou_threshold=cfg.nms_thresh)
     
     after_nms_anchors = anchors_over_thresh[anchors_nms_idx]
     after_nms_classes = classes_over_thresh[anchors_nms_idx]
@@ -70,3 +68,17 @@ def predict_single_imgs(model, img_path, cfg):
 
     return bbox_results, classes_results, scores_results
 
+
+def load_model(model, cfg):
+    """for single GPU trained or Multi-GPU trained 
+    """
+    state_dict =torch.load(cfg.load_from_path)
+    if cfg.GPU_nums > 1:
+        new_state_dict = OrderedDict()
+        for k, v in state_dict.items():
+            name = k[7:]   # remove 'module' in multi-GPU trained state_dict
+            new_state_dict[name] = v
+        model.load_state_dict(new_state_dict)
+    else:
+        model.load_state_dict(state_dict)
+    return model
