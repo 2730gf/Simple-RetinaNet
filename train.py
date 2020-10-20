@@ -76,14 +76,18 @@ def train(cfg):
     # load model dict
     if cfg.load_from:
         state_dict = torch.load(cfg.load_from_path)
+        # new_state_dict = OrderedDict()
+        # for k, v in state_dict.items():
+        #     # name = k[7:]   # remove `module.`
+        #     new_state_dict["module." + k] = v
+
         model.load_state_dict(state_dict)
 
-    
     # optimizer config
     if cfg.optim == 'adam':
-        optimizer = torch.optim.Adam(model.parameters(), 1e-5)
+        optimizer = torch.optim.Adam(model.parameters(), lr=cfg.lr)
     else:
-        optimizer = torch.optim.SGD(model.parameters(), lr=1e-5, momentum=0.9)
+        optimizer = torch.optim.SGD(model.parameters(), lr=cfg.lr, momentum=0.9)
     
     # loss function config
     criterion = FocalLoss()
