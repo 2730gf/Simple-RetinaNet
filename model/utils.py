@@ -115,7 +115,6 @@ def soft_nms(dets, box_scores, sigma=0.5, thresh=0.1, mode="linear"):
         else:
             weight = torch.exp(-(over * over) / sigma)
         scores[pos:] = weight * scores[pos:]
-
     # select the boxes and keep the corresponding indexes
     keep = dets[:, 4][scores > thresh].long()
-    return keep
+    return keep, scores[scores > thresh]

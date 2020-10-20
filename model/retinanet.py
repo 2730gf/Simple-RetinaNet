@@ -12,7 +12,6 @@ from backbone.resnet import resnet50, resnet101
 from fpn import FPN
 from anchors import Anchor
 
-
 model_urls = {
     'resnet18': 'https://download.pytorch.org/models/resnet18-5c106cde.pth',
     'resnet34': 'https://download.pytorch.org/models/resnet34-333f7ec4.pth',
@@ -60,7 +59,6 @@ class Classifier(nn.Module):
             B, W, H, C = out.shape
             out = out.view(B, W, H, self.num_anchors, self.num_classes)
             out = out.contiguous().view(B, -1, self.num_classes)
-
             features.append(out)
         
         res = torch.cat(features, dim=1)
@@ -100,8 +98,6 @@ class Regressor(nn.Module):
             out = self.head(out)
 
             out = out.permute(0, 2, 3, 1)
-            # B, W, H, C = out.shape
-            # out = out.contiguous().view(B, W, H, self.num_anchors, 4)
             res = out.contiguous().view(out.shape[0], -1, 4)
 
             features.append(res)
