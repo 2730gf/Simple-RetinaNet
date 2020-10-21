@@ -21,10 +21,28 @@ python train.py
 ```
 
 ### inference
-This implement provide two ways to use the trained model, for single image test and web-camera, you alse can visualize the model output of class logits and bbox regression in the notebook <kbd>scrip/inference.ipynb</kbd>
+We provide two ways to use the trained model, for single image test and web-camera, you alse can visualize the model output of class logits and bbox regression in the notebook <kbd>scrip/inference.ipynb</kbd>
 
 ```
-python predict.py  # change test img path .py file
+python predict.py  # change test img path first
 or
 python web_camera.py  # change carema_ip
 ```
+
+### results
+we train this model from scratch with backbone resnet50, but can not reach paper's results, here is the metric we got.
+```
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.284
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.423
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.310
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.135
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.309
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.402
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.248
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.341
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.345
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.157
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.371
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.481
+```
+if you want the state_dict to learn how the model work, click this [link](https://pan.baidu.com/s/1cTQO1GokShrQClHAMEQmKg)(passwd:bupt)
